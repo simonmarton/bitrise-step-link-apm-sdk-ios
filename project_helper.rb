@@ -28,25 +28,6 @@ class ProjectHelper
     @targets = collect_dependent_targets(@main_target)
     @targets = unique_targets(@targets) unless @targets.empty?
     raise "failed to collect #{@main_target}'s dependent targets" if @targets.empty?
-
-    # ensure configuration exist
-    action = scheme.archive_action
-    raise "archive action not defined for scheme: #{scheme_name}" unless action
-    default_configuration_name = action.build_configuration
-    raise "archive action's configuration not found for scheme: #{scheme_name}" unless default_configuration_name
-
-    if configuration_name.empty? || configuration_name == default_configuration_name
-      @configuration_name = default_configuration_name
-    elsif configuration_name != default_configuration_name
-      targets.each do |target_obj|
-        configuration = target_obj.build_configuration_list.build_configurations.find { |c| configuration_name.to_s == c.name }
-        raise "build configuration (#{configuration_name}) not defined for target: #{@main_target.name}" unless configuration
-      end
-
-      @configuration_name = configuration_name
-    end
-
-    @build_settings_by_target = {}
   end
 
   def link_static_library(target_name)
