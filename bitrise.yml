@@ -10,12 +10,13 @@ app:
   - BITRISE_STEP_VERSION: "0.0.1"
   - BITRISE_STEP_GIT_CLONE_URL: https://github.com/lszucs/bitrise-step-xcode-link-library.git
   - MY_STEPLIB_REPO_FORK_GIT_URL: $MY_STEPLIB_REPO_FORK_GIT_URL
+  - TEST_REPO: https://github.com/bitrise-io/iOS-Sample.git
 
 workflows:
   test:
     envs:
-    - BITRISE_PROJECT_PATH: $BITRISE_SOURCE_DIR/_tmp/Mind.xcodeproj
-    - BITRISE_SCHEME: Mind
+    - BITRISE_PROJECT_PATH: "$BITRISE_SOURCE_DIR/_tmp/iOS-Sample/iOS Sample.xcodeproj"
+    - BITRISE_SCHEME: "iOS Sample"
     steps:
     - script:
         title: Cleanup _tmp dir
@@ -34,7 +35,7 @@ workflows:
         inputs:
         - content: |-
             #!/bin/bash
-            cp -r ./../test/Mind.xcodeproj .
+            git clone $TEST_REPO
     - path::./:
         title: Step Test
     - script:
@@ -42,7 +43,7 @@ workflows:
         - content: |-
             #!/bin/bash
 
-            ruby ./../project_helper_test.rb
+            ruby ./../project_helper_test.rb "$BITRISE_PROJECT_PATH"
 
 
 

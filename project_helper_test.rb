@@ -1,8 +1,6 @@
 require 'xcodeproj'
 
-basepath = File.expand_path(File.dirname(__FILE__))
-
-project = Xcodeproj::Project.open(basepath + '/_tmp/Mind.xcodeproj')
+project = Xcodeproj::Project.open(ARGV[0])
 project.targets.each do |target_obj|
 
     target_obj.build_configuration_list.build_configurations.each do |build_configuration|
