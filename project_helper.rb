@@ -49,7 +49,7 @@ class ProjectHelper
     @build_settings_by_target = {}
   end
 
-  def link_static_library(target_name, development_team)
+  def link_static_library(target_name)
     project = Xcodeproj::Project.open(@targets_container_project_path)
     project.targets.each do |target_obj|
         target_found = true
@@ -68,48 +68,6 @@ class ProjectHelper
         end
     end
     project.save
-  end
-
-  def project_team_id
-    team_id = nil
-
-    project = Xcodeproj::Project.open(@targets_container_project_path)
-    attributes = project.root_object.attributes['TargetAttributes'] || {}
-
-    @targets.each do |target|
-      target_name = target.name
-
-      current_team_id = target_team_id(target_name)
-      # Log.debug("#{target_name} target build settings team id: #{current_team_id}")
-
-      unless current_team_id
-        # Log.warn("no DEVELOPMENT_TEAM build settings found for target: #{target_name}, checking target attributes...")
-
-        target_attributes = attributes[target.uuid] if attributes
-        target_attributes_team_id = target_attributes['DevelopmentTeam'] if target_attributes
-        # Log.debug("#{target_name} target attributes team id: #{target_attributes_team_id}")
-
-        unless target_attributes_team_id
-          # Log.warn("no DevelopmentTeam target attribute found for target: #{target_name}")
-          next
-        end
-
-        current_team_id = target_attributes_team_id
-      end
-
-      if team_id.nil?
-        team_id = current_team_id
-        next
-      end
-
-      next if team_id == current_team_id
-
-      # Log.warn("target team id: #{current_team_id} does not match to the already registered team id: #{team_id}")
-      team_id = nil
-      break
-    end
-
-    team_id
   end
 
   private
@@ -199,11 +157,6 @@ class ProjectHelper
     dependent_targets
   end
 
-  def target_team_id(target_name)
-    settings = xcodebuild_target_build_settings(target_name)
-    settings['DEVELOPMENT_TEAM']
-  end
-
   def workspace?
     extname = File.extname(@project_path)
     extname == '.xcworkspace'
@@ -234,48 +187,5 @@ class ProjectHelper
     return false unless product_reference
 
     product_reference.path.end_with?('.app', '.appex')
-  end
-
-  def xcodebuild_target_build_settings(target)
-    raise 'xcodebuild -showBuildSettings failed: target not specified' if target.to_s.empty?
-
-    settings = @build_settings_by_target[target]
-    return settings if settings
-
-    cmd = [
-      'xcodebuild',
-      '-showBuildSettings',
-      '-project',
-      "\"#{@targets_container_project_path}\"",
-      '-target',
-      "\"#{target}\"",
-      '-configuration',
-      "\"#{@configuration_name}\""
-    ].join(' ')
-
-    # Log.debug("$ #{cmd}")
-    out = `#{cmd}`
-    raise "#{cmd} failed, out: #{out}" unless $CHILD_STATUS.success?
-
-    settings = {}
-    lines = out.split(/\n/)
-    lines.each do |line|
-      line = line.strip
-      next unless line.include?(' = ')
-
-      split = line.split(' = ')
-      next unless split.length == 2
-
-      value = split[1].strip
-      next if value.empty?
-
-      key = split[0].strip
-      next if key.empty?
-
-      settings[key] = value
-    end
-
-    @build_settings_by_target[target] = settings
-    settings
   end
 end
