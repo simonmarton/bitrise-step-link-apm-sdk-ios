@@ -1,0 +1,30 @@
+title: |-
+  XCode Link Library
+summary: |
+  Link a library during the XCode build process into the resulting artifact.
+description: |
+  Link a library during the XCode build process into the resulting artifact.
+website: https://github.com/lszucs/bitrise-step-xcode-link-library
+source_code_url: https://github.com/lszucs/bitrise-step-xcode-link-library
+support_url: https://github.com/lszucs/bitrise-step-xcode-link-library/issues
+
+project_type_tags:
+  - ios
+  - macos
+
+type_tags:
+  - build
+
+is_requires_admin_user: true
+is_always_run: false
+is_skippable: false
+run_if: ""
+
+deps:
+  brew:
+  - name: git
+  apt_get:
+  - name: git
+
+inputs:
+outputs:
