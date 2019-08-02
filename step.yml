@@ -18,15 +18,3 @@ type_tags:
   - build
 
 is_requires_admin_user: true
-is_always_run: false
-is_skippable: false
-run_if: ""
-
-deps:
-  brew:
-  - name: git
-  apt_get:
-  - name: git
-
-inputs:
-outputs:
