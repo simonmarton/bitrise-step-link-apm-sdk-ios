@@ -42,9 +42,7 @@ workflows:
         - content: |-
             #!/bin/bash
 
-            if [ $(xcodeproj show  $BITRISE_PROJECT_PATH | grep -q libMonitor) -eq 1 ]; then
-              exit 1
-            fi
+            ruby ./../project_helper_test.rb
 
 
 
