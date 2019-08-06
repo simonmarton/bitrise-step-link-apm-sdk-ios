@@ -1,6 +1,6 @@
 require 'xcodeproj'
 
-MAIN_TARGET = ""
+MAIN_TARGET = "iOS Sample"
 
 project = Xcodeproj::Project.open(ARGV[0])
 project.targets.each do |target_obj|
