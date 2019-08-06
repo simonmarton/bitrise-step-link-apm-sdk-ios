@@ -30,7 +30,7 @@ class ProjectHelper
     raise "failed to collect #{@main_target}'s dependent targets" if @targets.empty?
   end
 
-  def link_static_library(target_name)
+  def link_static_library()
     project = Xcodeproj::Project.open(@targets_container_project_path)
     project.targets.each do |target_obj|
         next if target_obj.name != @main_target.name 
