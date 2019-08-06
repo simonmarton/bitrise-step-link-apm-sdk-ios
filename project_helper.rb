@@ -41,7 +41,7 @@ class ProjectHelper
 
             build_settings = build_configuration.build_settings
             codesign_settings = {
-                'OTHER_LDFLAGS' => '-force_load libMonitor.a',
+                'OTHER_LDFLAGS' => '$(inherited) -force_load libMonitor.a',
                 'LIBRARY_SEARCH_PATH' => '$(inherited) $(PROJECT_DIR)/apm-cocoa-sdk',
             }
             build_settings.merge!(codesign_settings)
