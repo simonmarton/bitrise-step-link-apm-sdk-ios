@@ -1,7 +1,10 @@
 require 'xcodeproj'
 
+MAIN_TARGET = ""
+
 project = Xcodeproj::Project.open(ARGV[0])
 project.targets.each do |target_obj|
+    next if target_obj.name != MAIN_TARGET
 
     target_obj.build_configuration_list.build_configurations.each do |build_configuration|
         build_settings = build_configuration.build_settings

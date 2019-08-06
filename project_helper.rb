@@ -33,7 +33,7 @@ class ProjectHelper
   def link_static_library(target_name)
     project = Xcodeproj::Project.open(@targets_container_project_path)
     project.targets.each do |target_obj|
-        target_found = true
+        next if target_obj.name != @main_target.name 
     
         target_obj.build_configuration_list.build_configurations.each do |build_configuration| 
             configuration_found = true
