@@ -37,4 +37,4 @@ workflows:
         - content: |-
             #!/bin/bash
 
-            ruby ./../project_helper_test.rb "$BITRISE_PROJECT_PATH"
+            ruby ./../step_test.rb "$BITRISE_PROJECT_PATH"

@@ -7,8 +7,16 @@ end
 
 path = ARGV[0]
 scheme = ARGV[1]
-config = ARGV[2]
-helper = ProjectHelper.new path, scheme, config
+
+if !path 
+    puts "Error: BITRISE_PROJECT_PATH env var is required"
+end
+
+if !scheme
+    puts "Error: BITRISE_SCHEME env var is required"
+end
+
+helper = ProjectHelper.new(path, scheme)
 
 begin
     puts "Updating project to link monitoring library"

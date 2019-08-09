@@ -6,10 +6,8 @@ require 'English'
 # ProjectHelper ...
 class ProjectHelper
   attr_reader :main_target
-  attr_reader :targets
-  attr_reader :platform
 
-  def initialize(project_or_workspace_path, scheme_name, configuration_name)
+  def initialize(project_or_workspace_path, scheme_name)
     raise "project not exist at: #{project_or_workspace_path}" unless File.exist?(project_or_workspace_path)
 
     extname = File.extname(project_or_workspace_path)

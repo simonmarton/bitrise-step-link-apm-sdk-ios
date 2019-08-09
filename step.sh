@@ -16,4 +16,4 @@ cp apm-cocoa-sdk/libMonitor.a "$BITRISE_PROJECT_PATH/.."
 rm -rf apm-cocoa-sdk
 
 THIS_SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-bundle exec ruby $THIS_SCRIPT_DIR/step.rb "$BITRISE_PROJECT_PATH" "$BITRISE_SCHEME" ""
+bundle exec ruby $THIS_SCRIPT_DIR/step.rb "$BITRISE_PROJECT_PATH" "$BITRISE_SCHEME"
