@@ -39,3 +39,15 @@ project.targets.each do |target_obj|
         end
     end
 end
+
+bitrise_configuration_path = "#{ENV['BITRISE_PROJECT_PATH']}/../bitrise_configuration.plist"
+if !File.file?(bitrise_configuration_path)
+    puts "Configurator plist not found at #{bitrise_configuration_path}"
+    exit 1
+end
+
+plist = Xcodeproj::Plist.read_from_path(bitrise_configuration_path)
+if plist['collector_token'] != ENV['APM_COLLECTOR_TOKEN']
+    puts "Collector token #{plist['collector_token']} in plist does not match test token #{ENV['APM_COLLECTOR_TOKEN']}"
+    exit 1
+end

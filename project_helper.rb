@@ -31,8 +31,7 @@ class ProjectHelper
   end
 
   def link_static_library()
-    project = Xcodeproj::Project.open(@targets_container_project_path)
-    project.targets.each do |target_obj|
+    @project.targets.each do |target_obj|
         next if target_obj.name != @main_target.name 
     
         target_obj.build_configuration_list.build_configurations.each do |build_configuration| 
@@ -48,7 +47,27 @@ class ProjectHelper
     
         end
     end
-    project.save
+    @project.save
+  end
+
+  def register_resource()
+    apm_collector_token = ENV['APM_COLLECTOR_TOKEN']
+    bitrise_configuration_path = "#{@project.path}/../bitrise_configuration.plist"
+
+    obj = Xcodeproj::Plist.write_to_path({
+      "collector_token" => apm_collector_token
+    }, bitrise_configuration_path)
+    
+    added_fileref = @project.new_file(bitrise_configuration_path)
+    
+    res_build_phase = @main_target.resources_build_phase
+
+    added_buildf = res_build_phase.add_file_reference(added_fileref)
+
+    group = @project.main_group
+    referenced_build_files = added_buildf.file_ref.build_files
+
+    @project.save
   end
 
   private
@@ -87,8 +106,8 @@ class ProjectHelper
       target_project_path = File.expand_path(container, scheme_container_project_dir)
       next unless File.exist?(target_project_path)
 
-      project = Xcodeproj::Project.open(target_project_path)
-      target = project.targets.find { |t| t.name == reference.target_name }
+      @project = Xcodeproj::Project.open(target_project_path)
+      target = @project.targets.find { |t| t.name == reference.target_name }
       next unless target
       next unless runnable_target?(target)
 

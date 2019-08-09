@@ -10,6 +10,7 @@ workflows:
     envs:
     - BITRISE_PROJECT_PATH: "$BITRISE_SOURCE_DIR/_tmp/iOS-Sample/iOS Sample.xcodeproj"
     - BITRISE_SCHEME: "iOS Sample"
+    - APM_COLLECTOR_TOKEN: 951fc805-5bb3-4a36-9c5b-7443b51d7067 #dummy token
     steps:
     - script:
         title: Cleanup _tmp dir
