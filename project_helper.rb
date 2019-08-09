@@ -23,11 +23,7 @@ class ProjectHelper
     # read scheme application targets
     @main_target, @targets_container_project_path = read_scheme_archivable_target_and_container_project(scheme, scheme_container_project_path)
     raise "failed to find #{scheme_name} scheme's main archivable target" unless @main_target
-    @platform = @main_target.platform_name
 
-    @targets = collect_dependent_targets(@main_target)
-    @targets = unique_targets(@targets) unless @targets.empty?
-    raise "failed to collect #{@main_target}'s dependent targets" if @targets.empty?
   end
 
   def link_static_library()
@@ -71,15 +67,6 @@ class ProjectHelper
   end
 
   private
-
-  def unique_targets(targets)
-    names = {}
-    targets.reject do |target|
-      found = names.key?(target.name)
-      names[target.name] = true
-      found
-    end
-  end
 
   def read_scheme_and_container_project(scheme_name)
     project_paths = [@project_path]
@@ -138,23 +125,6 @@ class ProjectHelper
     end
 
     nil
-  end
-
-  def collect_dependent_targets(target, dependent_targets = [])
-    dependent_targets << target
-
-    dependencies = target.dependencies || []
-    return dependent_targets if dependencies.empty?
-
-    dependencies.each do |dependency|
-      dependent_target = dependency.target
-      next unless dependent_target
-      next unless runnable_target?(dependent_target)
-
-      collect_dependent_targets(dependent_target, dependent_targets)
-    end
-
-    dependent_targets
   end
 
   def workspace?
