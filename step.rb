@@ -7,11 +7,11 @@ if !ENV['APM_COLLECTOR_TOKEN']
     exit 1
 end
 
-path = ARGV[0]
+project_path = ARGV[0]
 scheme = ARGV[1]
 lib_version = ENV['lib_version']
 
-if path.empty?
+if project_path.empty?
     puts "Error: BITRISE_PROJECT_PATH env var is required"
     exit 1
 end
@@ -32,9 +32,9 @@ if tmpf == nil
     puts "Error downloading Bitrise monitoring library version #{lib_version} from #{url}: #{e.message}"
     exit 1
 end
-FileUtils.mv(tmpf.path, "#{path}/#{tmpf.original_filename}")
+FileUtils.mv(tmpf.path, "#{project_path}/#{tmpf.original_filename}")
 
-helper = ProjectHelper.new(path, scheme)
+helper = ProjectHelper.new(project_path, scheme)
 
 begin
     puts "Updating project to link monitoring library"
