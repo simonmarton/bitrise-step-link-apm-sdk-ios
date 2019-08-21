@@ -1,3 +1,5 @@
+require 'down'
+require "fileutils"
 require_relative 'project_helper'
 
 if !ENV['APM_COLLECTOR_TOKEN']
@@ -15,6 +17,10 @@ end
 if !scheme
     puts "Error: BITRISE_SCHEME env var is required"
 end
+
+tmpf = Down.download("https://monitoring-sdk.firebaseapp.com/latest/libMonitor.a")
+puts "#{path}/#{tmpf.original_filename}"
+FileUtils.mv(tmpf.path, "#{path}/#{tmpf.original_filename}")
 
 helper = ProjectHelper.new(path, scheme)
 
