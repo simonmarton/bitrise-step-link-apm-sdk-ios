@@ -40,6 +40,12 @@ project.targets.each do |target_obj|
     end
 end
 
+apm_library_path = "#{ENV['BITRISE_PROJECT_PATH']}/../libMonitor.a"
+if !File.file?(apm_library_path)
+    puts "Monitoring library not found at #{apm_library_path}"
+    exit 1
+end
+
 bitrise_configuration_path = "#{ENV['BITRISE_PROJECT_PATH']}/../bitrise_configuration.plist"
 if !File.file?(bitrise_configuration_path)
     puts "Configurator plist not found at #{bitrise_configuration_path}"
