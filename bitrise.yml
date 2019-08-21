@@ -13,6 +13,12 @@ workflows:
     - APM_COLLECTOR_TOKEN: 951fc805-5bb3-4a36-9c5b-7443b51d7067 #dummy token
     steps:
     - script:
+        title: Run rspec tests
+        inputs:
+        - content: |-
+            #!/bin/bash
+            rspec
+    - script:
         title: Cleanup _tmp dir
         inputs:
         - content: |-
@@ -31,12 +37,12 @@ workflows:
             #!/bin/bash
             git clone $TEST_REPO
     - path::./:
-        title: Step Test
+        title: Run step
         inputs:
         - lib_version: "latest"
     - script:
+        title: Run blackbox tests
         inputs:
         - content: |-
             #!/bin/bash
-
             ruby ./../step_test.rb "$BITRISE_PROJECT_PATH"
