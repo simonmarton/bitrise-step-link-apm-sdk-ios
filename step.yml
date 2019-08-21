@@ -18,3 +18,13 @@ type_tags:
   - build
 
 is_requires_admin_user: true
+inputs:
+  - lib_version: latest
+    opts:
+      title: Library version
+      summary: The version of the Bitrise APM library to link into the app.
+      description: |-
+        The version of the Bitrise APM library to link into the app.
+      
+        List of available releases https://github.com/bitrise-io/apm-cocoa-sdk/releases
+      is_required: true

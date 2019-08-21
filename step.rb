@@ -9,7 +9,7 @@ end
 
 path = ARGV[0]
 scheme = ARGV[1]
-lib_version = ENV['LIB_VERSION']
+lib_version = ENV['lib_version']
 
 if !path 
     puts "Error: BITRISE_PROJECT_PATH env var is required"
