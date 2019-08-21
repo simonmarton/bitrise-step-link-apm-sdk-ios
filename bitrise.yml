@@ -1,0 +1,40 @@
+format_version: 4
+default_step_lib_source: https://github.com/bitrise-io/bitrise-steplib.git
+
+app:
+  envs:
+  - TEST_REPO: https://github.com/bitrise-io/iOS-Sample.git
+
+workflows:
+  test:
+    envs:
+    - BITRISE_PROJECT_PATH: "$BITRISE_SOURCE_DIR/_tmp/iOS-Sample/iOS Sample.xcodeproj"
+    - BITRISE_SCHEME: "iOS Sample"
+    - APM_COLLECTOR_TOKEN: 951fc805-5bb3-4a36-9c5b-7443b51d7067 #dummy token
+    steps:
+    - script:
+        title: Cleanup _tmp dir
+        inputs:
+        - content: |-
+            #!/bin/bash
+            set -ev
+            rm -rf "_tmp"
+            mkdir -p "_tmp"
+    - change-workdir:
+        title: Switch working dir to _tmp
+        inputs:
+        - path: ./_tmp
+        - is_create_path: "true"
+    - script:
+        inputs:
+        - content: |-
+            #!/bin/bash
+            git clone $TEST_REPO
+    - path::./:
+        title: Step Test
+    - script:
+        inputs:
+        - content: |-
+            #!/bin/bash
+
+            ruby ./../step_test.rb "$BITRISE_PROJECT_PATH"
