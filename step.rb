@@ -1,6 +1,6 @@
-require 'down'
 require "fileutils"
 require_relative 'project_helper'
+require_relative 'functions'
 
 if !ENV['APM_COLLECTOR_TOKEN']
     puts 'Error: missing APM_COLLECTOR_TOKEN env'
@@ -26,14 +26,13 @@ if lib_version.empty?
     exit 1
 end
 
-begin
-    url = "https://monitoring-sdk.firebaseapp.com/#{lib_version}/libMonitor.a"
-    tmpf = Down.download(url)
-    FileUtils.mv(tmpf.path, "#{path}/#{tmpf.original_filename}")
-rescue Exception => e
+url = "https://monitoring-sdk.firebaseapp.com/#{lib_version}/libMonitor.a"
+tmpf = download_library(url)
+if tmpf == nil
     puts "Error downloading Bitrise monitoring library version #{lib_version} from #{url}: #{e.message}"
     exit 1
 end
+FileUtils.mv(tmpf.path, "#{path}/#{tmpf.original_filename}")
 
 helper = ProjectHelper.new(path, scheme)
 
