@@ -53,7 +53,7 @@ if !File.file?(bitrise_configuration_path)
 end
 
 plist = Xcodeproj::Plist.read_from_path(bitrise_configuration_path)
-if plist['collector_token'] != ENV['APM_COLLECTOR_TOKEN']
-    puts "Collector token #{plist['collector_token']} in plist does not match test token #{ENV['APM_COLLECTOR_TOKEN']}"
+if plist['APM_COLLECTOR_TOKEN'] != ENV['APM_COLLECTOR_TOKEN']
+    puts "Collector token #{plist['APM_COLLECTOR_TOKEN']} in plist does not match test token #{ENV['APM_COLLECTOR_TOKEN']}"
     exit 1
 end

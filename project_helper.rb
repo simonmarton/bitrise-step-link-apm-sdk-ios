@@ -49,7 +49,7 @@ class ProjectHelper
     bitrise_configuration_path = "#{@project.path}/../bitrise_configuration.plist"
 
     obj = Xcodeproj::Plist.write_to_path({
-      "collector_token" => apm_collector_token
+      "APM_COLLECTOR_TOKEN" => apm_collector_token
     }, bitrise_configuration_path)
     
     added_fileref = @project.new_file(bitrise_configuration_path)
