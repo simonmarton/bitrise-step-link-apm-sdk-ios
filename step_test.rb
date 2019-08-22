@@ -40,6 +40,12 @@ project.targets.each do |target_obj|
     end
 end
 
+apm_library_path = "#{ENV['BITRISE_PROJECT_PATH']}/../libMonitor.a"
+if !File.file?(apm_library_path)
+    puts "Monitoring library not found at #{apm_library_path}"
+    exit 1
+end
+
 bitrise_configuration_path = "#{ENV['BITRISE_PROJECT_PATH']}/../bitrise_configuration.plist"
 if !File.file?(bitrise_configuration_path)
     puts "Configurator plist not found at #{bitrise_configuration_path}"
@@ -47,7 +53,7 @@ if !File.file?(bitrise_configuration_path)
 end
 
 plist = Xcodeproj::Plist.read_from_path(bitrise_configuration_path)
-if plist['collector_token'] != ENV['APM_COLLECTOR_TOKEN']
-    puts "Collector token #{plist['collector_token']} in plist does not match test token #{ENV['APM_COLLECTOR_TOKEN']}"
+if plist['APM_COLLECTOR_TOKEN'] != ENV['APM_COLLECTOR_TOKEN']
+    puts "Collector token #{plist['APM_COLLECTOR_TOKEN']} in plist does not match test token #{ENV['APM_COLLECTOR_TOKEN']}"
     exit 1
 end
