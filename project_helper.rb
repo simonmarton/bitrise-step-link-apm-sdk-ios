@@ -1,3 +1,4 @@
+require 'find'
 require 'xcodeproj'
 require 'json'
 require 'plist'
@@ -72,7 +73,13 @@ class ProjectHelper
 
     project_paths.each do |project_path|
       schema_path = File.join(project_path, 'xcshareddata', 'xcschemes', scheme_name + '.xcscheme')
-      next unless File.exist?(schema_path)
+
+      # if shared scheme does not exist, find the first user scheme
+      unless File.exist?(schema_path)
+        schema_path = Find.find(project_path).select { |f| f =~ /.*#{scheme_name}\.xcscheme$/ }[0]
+      end
+
+      next unless schema_path
 
       return Xcodeproj::XCScheme.new(schema_path), project_path
     end
