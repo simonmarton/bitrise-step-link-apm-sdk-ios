@@ -19,6 +19,20 @@ type_tags:
 
 is_requires_admin_user: true
 inputs:
+  - project_path: $BITRISE_PROJECT_PATH
+    opts:
+      title: "Project (or Workspace) path"
+      summary: ""
+      description: |-
+        A `.xcodeproj` or `.xcworkspace` path.
+      is_required: true
+  - scheme: $BITRISE_SCHEME
+    opts:
+      title: "Scheme name"
+      summary: ""
+      description: |-
+        The Scheme to use.
+      is_required: true
   - lib_version: latest
     opts:
       title: Library version

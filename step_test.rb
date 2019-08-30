@@ -1,8 +1,8 @@
 require 'xcodeproj'
 
-MAIN_TARGET = ARGV[1]
+MAIN_TARGET = ENV['BITRISE_SCHEME']
 
-project = Xcodeproj::Project.open(ARGV[0].gsub(/\.xcworkspace\b/, '.xcodeproj'))
+project = Xcodeproj::Project.open("#{ENV['BITRISE_PROJECT_PATH']}".gsub(/\.xcworkspace\b/, '.xcodeproj'))
 project.targets.each do |target_obj|
     next if target_obj.name != MAIN_TARGET
 

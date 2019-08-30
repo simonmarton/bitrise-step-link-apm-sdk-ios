@@ -7,8 +7,8 @@ if !ENV['APM_COLLECTOR_TOKEN']
     exit 1
 end
 
-project_path = ARGV[0]
-scheme = ARGV[1]
+project_path = ENV['project_path']
+scheme = ENV['scheme']
 lib_version = ENV['lib_version']
 
 if project_path.empty?

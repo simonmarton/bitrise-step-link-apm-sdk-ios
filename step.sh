@@ -14,5 +14,5 @@ fi
 #install step dependencies
 bundle install $GEMFILE
 
-bundle exec $GEMFILE ruby $THIS_SCRIPT_DIR/step.rb "$BITRISE_PROJECT_PATH" "$BITRISE_SCHEME"
+bundle exec $GEMFILE ruby $THIS_SCRIPT_DIR/step.rb
 
