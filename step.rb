@@ -32,7 +32,8 @@ if tmpf == nil
     puts "Error downloading Bitrise monitoring library version #{lib_version} from #{url}: #{e.message}"
     exit 1
 end
-FileUtils.mv(tmpf.path, "#{project_path}/../#{tmpf.original_filename}")
+
+FileUtils.mv(tmpf.path, "#{File.dirname(project_path)}/#{tmpf.original_filename}")
 
 helper = ProjectHelper.new(project_path, scheme)
 

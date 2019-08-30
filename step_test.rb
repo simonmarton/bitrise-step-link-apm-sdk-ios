@@ -1,14 +1,13 @@
 require 'xcodeproj'
 
-MAIN_TARGET = "iOS Sample"
+MAIN_TARGET = ARGV[1]
 
-project = Xcodeproj::Project.open(ARGV[0])
+project = Xcodeproj::Project.open(ARGV[0].gsub(/\.xcworkspace\b/, '.xcodeproj'))
 project.targets.each do |target_obj|
     next if target_obj.name != MAIN_TARGET
 
     target_obj.build_configuration_list.build_configurations.each do |build_configuration|
         build_settings = build_configuration.build_settings
-        
 
         if build_settings['OTHER_LDFLAGS']
             build_settings['OTHER_LDFLAGS'].each_with_index do |flag, idx|

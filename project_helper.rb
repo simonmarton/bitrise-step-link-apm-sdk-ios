@@ -9,12 +9,12 @@ class ProjectHelper
   attr_reader :main_target
 
   def initialize(project_or_workspace_path, scheme_name)
-    raise "project not exist at: #{project_or_workspace_path}" unless File.exist?(project_or_workspace_path)
+    raise "project not exist at: #{project_or_workspace_path}" unless File.exist?("#{project_or_workspace_path}")
 
     extname = File.extname(project_or_workspace_path)
     raise "unkown project extension: #{extname}, should be: .xcodeproj or .xcworkspace" unless ['.xcodeproj', '.xcworkspace'].include?(extname)
 
-    @project_path = project_or_workspace_path
+    @project_path = "#{project_or_workspace_path}"
 
     # ensure scheme exist
     scheme, scheme_container_project_path = read_scheme_and_container_project(scheme_name)

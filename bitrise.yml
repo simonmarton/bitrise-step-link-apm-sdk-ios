@@ -1,48 +1,102 @@
-format_version: 4
+format_version: 8
 default_step_lib_source: https://github.com/bitrise-io/bitrise-steplib.git
 
 app:
-  envs:
-  - TEST_REPO: https://github.com/bitrise-io/iOS-Sample.git
+  envs: 
+  - APM_COLLECTOR_TOKEN: 951fc805-5bb3-4a36-9c5b-7443b51d7067 #dummy token
+  - ORIGINAL_WORK_DIR: $BITRISE_SOURCE_DIR
 
 workflows:
-  test:
+  ci:
+    after_run:
+    - _prepare
+    - test_project
+    - test_workflow
+
+
+  test_project:
     envs:
-    - BITRISE_PROJECT_PATH: "$BITRISE_SOURCE_DIR/_tmp/iOS-Sample/iOS Sample.xcodeproj"
+    - TEST_REPO: https://github.com/bitrise-io/iOS-Sample.git
+    - BITRISE_PROJECT_PATH: "$ORIGINAL_WORK_DIR/_tmp/iOS-Sample/iOS Sample.xcodeproj"
     - BITRISE_SCHEME: "iOS Sample"
-    - APM_COLLECTOR_TOKEN: 951fc805-5bb3-4a36-9c5b-7443b51d7067 #dummy token
+    after_run:
+    - _common
+
+  test_workflow:
+    envs:
+    - TEST_REPO: https://github.com/bitrise-io/sample-apps-ios-workspace-swift.git
+    - BITRISE_PROJECT_PATH: "$ORIGINAL_WORK_DIR/_tmp/sample-apps-ios-workspace-swift/sample-apps-ios-workspace-swift.xcworkspace"
+    - BITRISE_SCHEME: "sample-apps-ios-workspace-swift"
+    after_run:
+    - _common
+
+  _prepare:
     steps:
+    - script:
+        run_if: .IsCI
+        title: Install the Gem.lock's bundler version.
+        inputs:
+        - content: |-
+            #!/usr/bin/env bash
+            set -ex
+
+            gem install bundler --force
+            gem update --system
+            bundle update --bundler
     - script:
         title: Run rspec tests
         inputs:
         - content: |-
-            #!/bin/bash
-            rspec
+            #!/usr/bin/env bash
+            set -ex
+
+            bundle exec rspec
+
+  _common:
+    steps:
     - script:
         title: Cleanup _tmp dir
         inputs:
         - content: |-
-            #!/bin/bash
-            set -ev
+            #!/usr/bin/env bash
+            set -ex
+            
+            cd $ORIGINAL_WORK_DIR
             rm -rf "_tmp"
-            mkdir -p "_tmp"
+            mkdir "_tmp"
     - change-workdir:
         title: Switch working dir to _tmp
         inputs:
-        - path: ./_tmp
-        - is_create_path: "true"
+        - path: $ORIGINAL_WORK_DIR/_tmp
+        - is_create_path: "false"
     - script:
+        title: Git clone iOS sample app
         inputs:
         - content: |-
-            #!/bin/bash
+            #!/usr/bin/env bash
+            set -ex
+
             git clone $TEST_REPO
     - path::./:
         title: Run step
+        description: |
+            The step first downloads the libMonitor.a static library, then links it to the provided iOS project.
+
+            The step works by modifying the project.pbxproj descriptor to include necessary flags and 
+            variables for linking.
         inputs:
         - lib_version: "latest"
     - script:
         title: Run blackbox tests
         inputs:
         - content: |-
-            #!/bin/bash
+            #!/usr/bin/env bash
+            set -ex
+
             ruby ./../step_test.rb "$BITRISE_PROJECT_PATH"
+    - create-zip@0.9.0:
+        run_if: .IsCI
+        title: Zip & export the modified iOS project
+        inputs:
+        - destination: $BITRISE_DEPLOY_DIR
+        - source_path: $BITRISE_PROJECT_PATH
