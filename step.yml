@@ -1,21 +1,19 @@
-title: |-
-  Xcode Link Bitrise APM library
-summary: |
-  Link Bitrise APM library during the Xcode build process into the resulting artifact.
+title: Xcode Link Bitrise APM library
+summary: Link Bitrise APM library during the Xcode build process into the resulting artifact.
 description: |
   Link Bitrise APM library during the Xcode build process into the resulting artifact.
 
   The step modifies the build settings in the project.pbxcode descriptor. 
-website: https://github.com/lszucs/bitrise-step-xcode-link-library
-source_code_url: https://github.com/lszucs/bitrise-step-xcode-link-library
-support_url: https://github.com/lszucs/bitrise-step-xcode-link-library/issues
+website: https://github.com/bitrise-steplib/bitrise-step-link-apm-sdk-ios
+source_code_url: https://github.com/bitrise-steplib/bitrise-step-link-apm-sdk-ios
+support_url: https://github.com/bitrise-steplib/bitrise-step-link-apm-sdk-ios/issues
 
 project_type_tags:
   - ios
   - macos
 
 type_tags:
-  - build
+  - utility
 
 is_requires_admin_user: true
 inputs:
