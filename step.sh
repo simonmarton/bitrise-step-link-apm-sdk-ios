@@ -8,7 +8,8 @@ GEMFILE="--gemfile=${THIS_SCRIPT_DIR}/Gemfile"
 if [ "$CI" == "true" ]; then
     gem install bundler --force
     gem update --system
-    bundle update --bundler
+
+    bundle update --bundler $GEMFILE
 fi  
 
 #install step dependencies
