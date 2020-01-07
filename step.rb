@@ -26,10 +26,10 @@ if lib_version.empty?
     exit 1
 end
 
-url = "https://monitoring-sdk.firebaseapp.com/#{lib_version}/libMonitor.a"
+url = "https://monitoring-sdk.firebaseapp.com/#{lib_version}/libTrace.a"
 tmpf = download_library(url)
 if tmpf == nil
-    puts "Error downloading Bitrise monitoring library version #{lib_version} from #{url}: #{e.message}"
+    puts "Error downloading Bitrise Trace library version #{lib_version} from #{url}: #{e.message}"
     exit 1
 end
 
@@ -38,10 +38,10 @@ FileUtils.mv(tmpf.path, "#{File.dirname(project_path)}/#{tmpf.original_filename}
 helper = ProjectHelper.new(project_path, scheme)
 
 begin
-    puts "Updating project to link monitoring library"
+    puts "Updating project to link Trace library"
     helper.link_static_library()
 rescue Exception => e
-    puts "Error modifying project to link monitoring library: #{e.message}"
+    puts "Error modifying project to link Trace library: #{e.message}"
     exit 1
 end
 

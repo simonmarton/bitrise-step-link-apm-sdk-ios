@@ -2,6 +2,7 @@
 .gows.user.yml
 _tmp
 libMonitor.a
+libTrace.a
 .bitrise.secrets.yml
 
 # General

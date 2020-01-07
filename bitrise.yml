@@ -80,7 +80,7 @@ workflows:
     - path::./:
         title: Run step
         description: |
-            The step first downloads the libMonitor.a static library, then links it to the provided iOS project.
+            The step first downloads the libTrace.a static library, then links it to the provided iOS project.
 
             The step works by modifying the project.pbxproj descriptor to include necessary flags and 
             variables for linking.

@@ -11,16 +11,16 @@ project.targets.each do |target_obj|
 
         if build_settings['OTHER_LDFLAGS']
             build_settings['OTHER_LDFLAGS'].each_with_index do |flag, idx|
-                if flag == "libMonitor.a" && build_settings['OTHER_LDFLAGS'][idx-1] != '-force_load'
+                if flag == "libTrace.a" && build_settings['OTHER_LDFLAGS'][idx-1] != '-force_load'
                     puts "Target '#{target_obj.name}' with '#{build_configuration.name}' configuration does not contain expected build settings"
-                    puts "Expected OTHER_LDFLAGS should contain '-force_load libMonitoring.a'"
+                    puts "Expected OTHER_LDFLAGS should contain '-force_load libTrace.a'"
                     puts "Actual OTHER_LDFLAGS: #{build_settings['OTHER_LDFLAGS']}"
                     exit 1
                 end
             end
         else
             puts "Target '#{target_obj.name}' with '#{build_configuration.name}' configuration does not contain OTHER_LDFLAGS"
-            puts "Expected OTHER_LDFLAGS should contain '-force_load libMonitoring.a'"
+            puts "Expected OTHER_LDFLAGS should contain '-force_load libTrace.a'"
             exit 1
         end
 
@@ -39,9 +39,9 @@ project.targets.each do |target_obj|
     end
 end
 
-apm_library_path = "#{ENV['BITRISE_PROJECT_PATH']}/../libMonitor.a"
+apm_library_path = "#{ENV['BITRISE_PROJECT_PATH']}/../libTrace.a"
 if !File.file?(apm_library_path)
-    puts "Monitoring library not found at #{apm_library_path}"
+    puts "Trace library not found at #{apm_library_path}"
     exit 1
 end
 
