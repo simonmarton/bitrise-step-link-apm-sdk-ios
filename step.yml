@@ -1,4 +1,3 @@
-title: Xcode Link Bitrise APM library
 summary: Link Bitrise APM library during the Xcode build process into the resulting artifact.
 description: |
   Link Bitrise APM library during the Xcode build process into the resulting artifact.
